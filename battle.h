@@ -1,4 +1,5 @@
-#include <list>
+#ifndef BATTLE_H
+#define BATTLE_H
 
 #include "imperialfleet.h"
 #include "rebelfleet.h"
@@ -21,3 +22,5 @@ struct squared<1> {
         return reinterpret_cast<int*>(this)[i];
     }
 };
+
+#endif

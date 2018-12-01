@@ -1,5 +1,9 @@
+#ifndef REBELFLEET_H
+#define REBELFLEET_H
+
 #include<iostream>
 #include<cassert>
+
 using namespace std;
 
 constexpr int MIN_STARCRUISER_SPEED = 99999;
@@ -55,3 +59,6 @@ using StarCruiser = RebelStarship<U, starCruiser, MIN_STARCRUISER_SPEED, MAX_STA
 
 template<typename U>
 using Explorer = RebelStarship<U, explorer, MIN_XWING_EXPLORER_SPEED, MAX_XWING_EXPLORER_SPEED>;
+
+
+#endif
