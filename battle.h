@@ -37,8 +37,8 @@ public:
     int getValue(){
         return x;
     }
-    bool isTrue(){
-        return false;
+    bool isLast(){
+        return true;
     }
 };
 
