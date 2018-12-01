@@ -52,7 +52,7 @@ public:
 };
 
 template<typename U>
-using XWing = RebelStarship<U, xWing, MIN_XWING_EXPLORER_SPEED, MIN_XWING_EXPLORER_SPEED>;
+using XWing = RebelStarship<U, xWing, MIN_XWING_EXPLORER_SPEED, MAX_XWING_EXPLORER_SPEED>;
 
 template<typename U>
 using StarCruiser = RebelStarship<U, starCruiser, MIN_STARCRUISER_SPEED, MAX_STARCRUISER_SPEED>;
