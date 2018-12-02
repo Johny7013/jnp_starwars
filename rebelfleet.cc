@@ -37,6 +37,10 @@ public:
         shield = damage > shield ? 0 : shield - damage;
     }
 
+    bool canAttack() {
+        return spaceshipType != explorer;
+    }
+
     template <SpaceshipType A = spaceshipType, typename = typename std::enable_if<spaceshipType != explorer>::type>
     U getAttackPower() {
         return attackPower;

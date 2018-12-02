@@ -37,9 +37,9 @@ template<typename U>
 using TIEFighter = ImperialStarship<U, tieFighter>;
 
 template<typename I, typename R>
-void attack(I imperialShip, R rebelShip) {
+void attack(I &imperialShip, R &rebelShip) {
 	rebelShip.takeDamage(imperialShip.getAttackPower());
-	if (rebelShip.canAttack())
+	if constexpr (R::attackShip)
 		imperialShip.takeDamage(rebelShip.getAttackPower());
 }
 
@@ -53,8 +53,8 @@ int main() {
     cout << exp.getShield() << endl;
     cout << tf.getShield() << endl;
 
-    attack<TIEFighter, XWing>(tf, wing);
-    attack<TIEFighter, Explorer>(tf, exp);
+    attack<TIEFighter<int>, XWing<int>>(tf, wing);
+    attack<TIEFighter<int>, Explorer<int>>(tf, exp);
 
     cout<< wing.getAttackPower() << endl;
 
