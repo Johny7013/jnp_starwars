@@ -1,7 +1,10 @@
-#pragma once
+#ifndef IMPERIALFLEET_H
+#define IMPERIALFLEET_H
+
 #include<iostream>
 #include<cassert>
 #include"rebelfleet.h"
+
 using namespace std;
 
 enum ImperialSpaceshipType {deathStar, imperialDestroyer, tieFighter};
@@ -44,3 +47,4 @@ void attack(I &imperialShip, R &rebelShip) {
 		imperialShip.takeDamage(rebelShip.getAttackPower());
 }
 
+#endif
