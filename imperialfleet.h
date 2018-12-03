@@ -55,7 +55,7 @@ struct isImperialshipBase<ImperialStarship<U, imperialShip>>: true_type{};
 
 
 template<typename R>
-bool isImperialship() {
+constexpr bool isImperialship() {
     return isImperialshipBase<R>::value;
 }
 

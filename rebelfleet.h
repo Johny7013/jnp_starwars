@@ -53,7 +53,7 @@ public:
 };
 
 template<typename U>
-using XWing = RebelStarship<U, true, MIN_XWING_EXPLORER_SPEED, MIN_XWING_EXPLORER_SPEED>;
+using XWing = RebelStarship<U, true, MIN_XWING_EXPLORER_SPEED, MAX_XWING_EXPLORER_SPEED>;
 
 template<typename U>
 using StarCruiser = RebelStarship<U, true, MIN_STARCRUISER_SPEED, MAX_STARCRUISER_SPEED>;
@@ -68,7 +68,7 @@ template<typename U, bool canAttack, int minSpeed, int maxSpeed>
 struct isRebelshipBase<RebelStarship<U, canAttack, minSpeed, maxSpeed>>: true_type{};
 
 template<typename R>
-bool isRebelship() {
+constexpr bool isRebelship() {
     return isRebelshipBase<R>::value;
 }
 

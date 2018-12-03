@@ -19,7 +19,4 @@ template<typename T, T t0, T t1, typename...S>
 class SpaceBattle {
 	static_assert(t0 >=0 && t1 >= t0);
 	static constexpr auto BattleTimes = squares<T, t1>();
-
-	
-	
 };

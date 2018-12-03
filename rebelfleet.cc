@@ -1,8 +1,8 @@
-// #include<iostream>
-// #include<cassert>
-// #include"imperialfleet.h"
+ #include<iostream>
+ #include<cassert>
+ #include"imperialfleet.h"
 
-// using namespace std;
+ using namespace std;
 
 // constexpr int MIN_STARCRUISER_SPEED = 99999;
 // constexpr int MAX_STARCRUISER_SPEED = 299795;
@@ -71,15 +71,15 @@
 //     return isRebelshipBase<R>::value;
 // }
 
-// int main() {
-//     XWing<int> xwing(10, 299796, 5);
-//     TIEFighter<int> tf(10, 10);
-//     // int pow = xwing.getAttackPower();
+ int main() {
+     XWing<int> xwing(10, 299796, 5);
+     TIEFighter<int> tf(10, 10);
+     // int pow = xwing.getAttackPower();
 
-//     cout << isRebelship<XWing<int>>() << endl;
-//     cout << isRebelship<TIEFighter<int>>() << endl;
-//     cout << isRebelshipBase<XWing<int>>::value<< endl;
+     cout << isRebelship<XWing<int>>() << endl;
+     cout << isRebelship<TIEFighter<int>>() << endl;
+     cout << isRebelshipBase<XWing<int>>::value<< endl;
 
-//     // Explorer<int> explorer(2, 3);
-//     // int pow2 = explorer.getAttackPower();
-// }
+     // Explorer<int> explorer(2, 3);
+     // int pow2 = explorer.getAttackPower();
+ }
