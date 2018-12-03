@@ -34,11 +34,11 @@ public:
         assert(speed <= maxSpeed && speed >= minSpeed);
     }
 
-    U getShield() {
+    U getShield() const {
         return shield;
     }
 
-    U getSpeed() {
+    U getSpeed() const {
         return speed;
     }
 

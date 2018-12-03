@@ -9,6 +9,8 @@
 
 using namespace std;
 
+enum Division {imperial, rebel};
+
 template<typename T, T end, T cur = 0, T...results>
 constexpr static auto squares() {
     if constexpr (cur * cur <= end)
@@ -18,11 +20,11 @@ constexpr static auto squares() {
 }
 
 template<typename R>
-constexpr int starshipFraction(){
+constexpr Division starshipFraction(){
     if constexpr (isRebelship<R>())
-        return 1;
+        return rebel;
     else if constexpr (isImperialship<R>())
-        return 0;
+        return imperial;
     else
         static_assert("An object that isn't a starship passed to battle.");
 }
@@ -39,10 +41,10 @@ constexpr static auto divisionIntoFractions() {
 template<typename T,T t0, T t1, typename... S>
 class SpaceBattle {
 
-    void check(){
-        static_assert(t0 >= 0 && t0 <= t1, "t0 has wrong value");
-        static_assert(t1 >= 0, "t1 has wrong value");
-    }
+
+    static_assert(t0 >= 0 && t0 <= t1, "t0 has wrong value");
+    static_assert(t1 >= 0, "t1 has wrong value");
+    
 
     T currentTime = t0;
     static constexpr auto battleTimes = squares<T, t1>();
@@ -51,18 +53,23 @@ class SpaceBattle {
     size_t numberOfImperialShips = 0;
     size_t numberOfRebelianShips = 0;
 
+    template<typename W>
+    bool isAlive (W starship) {
+        return starship.getShield() > 0;
+    }
+
     template<size_t i, size_t j, size_t size>
     void processFight(){
         if constexpr (i < size && j < size){
 
-            if constexpr (get<i>(division) == 0 && get<j>(division) == 1) {
+            if constexpr (get<i>(division) == imperial && get<j>(division) == rebel) {
 
-                if(get<i>(spaceships).getShield() > 0 && get<j>(spaceships).getShield() > 0){
+                if(isAlive(get<i>(spaceships)) && isAlive(get<j>(spaceships))){
                     attack(get<i>(spaceships), get<j>(spaceships));
 
-                    if(get<i>(spaceships).getShield() == 0)
+                    if(!isAlive(get<i>(spaceships)))
                         numberOfImperialShips--;
-                    if(get<j>(spaceships).getShield() == 0)
+                    if(!isAlive(get<j>(spaceships)))
                         numberOfRebelianShips--;
                 }
             }
@@ -78,7 +85,7 @@ class SpaceBattle {
     void setNumersOfShips(){
         if constexpr (i < size)
         {
-            if(get<i>(division) == 1)
+            if(get<i>(division) == rebel)
                 numberOfRebelianShips++;
             else
                 numberOfImperialShips++;
@@ -106,7 +113,7 @@ public:
     size_t countImperialFleet(){
         return numberOfImperialShips;
     }
-    size_t countRebelianFleet(){
+    size_t countRebelFleet(){
         return numberOfRebelianShips;
     }
     // after implementation of thick function make it private
@@ -125,6 +132,30 @@ public:
 //
 //        cout << numberOfImperialShips << endl;
 //        cout << numberOfRebelianShips << endl;
+    }
+
+    void tick(T timeStep) {
+        size_t beg = 0;
+        size_t end = battleTimes.size();
+
+        while (beg + 1 < end) {
+            size_t mid = (beg + end) / 2;
+
+            if (battleTimes[mid] > currentTime)
+                end = mid;
+            else
+                beg = mid;
+        }
+
+        if (battleTimes[beg] == currentTime || battleTimes[end] == currentTime)
+            fight();
+
+        currentTime += timeStep;
+        // auto upper = upper_bound(battleTimes, battleTimes + battleTimes.size(), currentTime) - battleTimes;
+        // if (upper >= 0 && upper < battleTimes.size() && currentTime = battleTimes[upper])
+        //     fight();
+
+        // currentTime += timeStep;
     }
 
 };

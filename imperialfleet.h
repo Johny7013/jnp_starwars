@@ -18,11 +18,11 @@ public:
 
 	ImperialStarship(U shield, U attackPower): shield(shield), attackPower(attackPower) {}
 
-	U getShield() {
+	U getShield() const {
         return shield;
     }
 
-    U getAttackPower() {
+    U getAttackPower() const {
         return attackPower;
     }
 
