@@ -150,7 +150,7 @@ public:
         if (battleTimes[beg] == currentTime || battleTimes[end] == currentTime)
             fight();
 
-        currentTime += timeStep;
+        currentTime = (currentTime + timeStep) % (t1 + 1);
         // auto upper = upper_bound(battleTimes, battleTimes + battleTimes.size(), currentTime) - battleTimes;
         // if (upper >= 0 && upper < battleTimes.size() && currentTime = battleTimes[upper])
         //     fight();
