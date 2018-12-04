@@ -22,7 +22,7 @@ constexpr static auto squares() {
 
 template<typename R>
 constexpr Fraction starshipFraction(){
-    static_assert(isRebelship<R>() || isImperialship<R>(), "An object that isn't a starship passed to battle.");
+    static_assert(isRebelship<R>() || isImperialship<R>(), "An object that isn't a  non-const starship passed to battle.");
 
     if constexpr (isRebelship<R>())
         return rebel;
@@ -96,35 +96,17 @@ class SpaceBattle {
     void setNumersOfShips(){
         if constexpr (i < size)
         {
-            if(get<i>(division) == rebel)
+            if(get<i>(division) == rebel && isAlive(get<i>(spaceships)))
                 numberOfRebelianShips++;
-            else
+            else if(get<i>(division) == imperial && isAlive(get<i>(spaceships)))
                 numberOfImperialShips++;
 
             setNumersOfShips<i + 1, size>();
         }
     }
 
-    // auxiliary function to print values of shields
-    template<size_t i, size_t size>
-    auto printShields(){
-        if constexpr (i < size)
-        {
-            cout << get<i>(spaceships).getShield() << endl;
-            printShields<i + 1, size>();
-        }
-    }
-
-    // after implementation of thick function make it private
     void fight(){
         processFight<0, 0, sizeof...(S)>();
-
-        // print values
-//        cout << "here: " << endl;
-//        printShields<0, sizeof...(S)>();
-//
-//        cout << numberOfImperialShips << endl;
-//        cout << numberOfRebelianShips << endl;
     }
 
 
@@ -168,13 +150,7 @@ public:
         }
 
         currentTime = (currentTime + timeStep) % (t1 + 1);
-        // auto upper = upper_bound(battleTimes, battleTimes + battleTimes.size(), currentTime) - battleTimes;
-        // if (upper >= 0 && upper < battleTimes.size() && currentTime = battleTimes[upper])
-        //     fight();
-
-        // currentTime += timeStep;
     }
-
 };
 
 #endif

@@ -4,8 +4,6 @@
 #include<iostream>
 #include<cassert>
 
-using namespace std;
-
 constexpr int MIN_STARCRUISER_SPEED = 99999;
 constexpr int MAX_STARCRUISER_SPEED = 299795;
 constexpr int MIN_XWING_EXPLORER_SPEED = 299796;
@@ -47,7 +45,7 @@ public:
     }
 
     template <bool A = canAttack, typename = std::enable_if_t<A>>
-    U getAttackPower() {
+    U getAttackPower() const {
         return attackPower;
     }
 };
@@ -62,10 +60,10 @@ template<typename U>
 using Explorer = RebelStarship<U, false, MIN_XWING_EXPLORER_SPEED, MAX_XWING_EXPLORER_SPEED>;
 
 template<typename>
-struct isRebelshipBase: false_type{};
+struct isRebelshipBase: std::false_type{};
 
 template<typename U, bool canAttack, int minSpeed, int maxSpeed>
-struct isRebelshipBase<RebelStarship<U, canAttack, minSpeed, maxSpeed>>: true_type{};
+struct isRebelshipBase<RebelStarship<U, canAttack, minSpeed, maxSpeed>>: std::true_type{};
 
 template<typename R>
 constexpr bool isRebelship() {

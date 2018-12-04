@@ -5,8 +5,6 @@
 #include<cassert>
 #include"rebelfleet.h"
 
-using namespace std;
-
 enum ImperialSpaceshipType {deathStar, imperialDestroyer, tieFighter};
 
 template<typename U, ImperialSpaceshipType>
@@ -48,10 +46,10 @@ void attack(I &imperialShip, R &rebelShip) {
 }
 
 template<typename>
-struct isImperialshipBase: false_type{};
+struct isImperialshipBase: std::false_type{};
 
 template<typename U, ImperialSpaceshipType imperialShip>
-struct isImperialshipBase<ImperialStarship<U, imperialShip>>: true_type{};
+struct isImperialshipBase<ImperialStarship<U, imperialShip>>: std::true_type{};
 
 
 template<typename R>
