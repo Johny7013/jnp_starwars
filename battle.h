@@ -9,7 +9,7 @@
 
 using namespace std;
 
-enum Division {imperial, rebel};
+enum Fraction {imperial, rebel};
 
 template<typename T, T end, T cur = 0, T...results>
 constexpr static auto squares() {
@@ -19,36 +19,43 @@ constexpr static auto squares() {
         return array<T, sizeof...(results)> ({results...});
 }
 
+
 template<typename R>
-constexpr Division starshipFraction(){
+constexpr Fraction starshipFraction(){
+    static_assert(isRebelship<R>() || isImperialship<R>(), "An object that isn't a starship passed to battle.");
+
     if constexpr (isRebelship<R>())
         return rebel;
-    else if constexpr (isImperialship<R>())
-        return imperial;
     else
-        static_assert("An object that isn't a starship passed to battle.");
+        return imperial;
 }
 
-template<typename head, typename... tail>
-constexpr static auto divisionIntoFractions() {
-    if constexpr (sizeof...(tail) == 0)
-        return tuple<int> (starshipFraction<head>());
+template<typename Starship, typename... Ships>
+constexpr static auto divideShipsIntoFractions() {
+    if constexpr (sizeof...(Ships) == 0)
+        return tuple<int> (starshipFraction<Starship>());
     else
-        return tuple_cat(tuple<int> (starshipFraction<head>()), divisionIntoFractions<tail...>());
+        return tuple_cat(tuple<int> (starshipFraction<Starship>()), divideShipsIntoFractions<Ships...>());
+}
+
+template<typename... Ships>
+constexpr static auto divisionIntoFractions(){
+    if constexpr (sizeof... (Ships) == 0)
+        return tuple<> ();
+    else
+        return divideShipsIntoFractions<Ships...>();
 }
 
 
 template<typename T,T t0, T t1, typename... S>
 class SpaceBattle {
 
-
     static_assert(t0 >= 0 && t0 <= t1, "t0 has wrong value");
     static_assert(t1 >= 0, "t1 has wrong value");
-    
 
     T currentTime = t0;
     static constexpr auto battleTimes = squares<T, t1>();
-    static constexpr auto division = divisionIntoFractions<S...>(); // 1 - rebel, 0 - imperial
+    static constexpr auto division = divisionIntoFractions<S...>();
     tuple<S...> spaceships;
     size_t numberOfImperialShips = 0;
     size_t numberOfRebelianShips = 0;
@@ -74,10 +81,10 @@ class SpaceBattle {
                 }
             }
 
-            processFight<i + 1, j, size>();
-        } else if constexpr (j < size){
+            processFight<i, j + 1, size>();
+        } else if constexpr (i < size){
 
-            processFight<0, j + 1, size>();
+            processFight<i + 1, 0, size>();
         }
     }
 
@@ -104,6 +111,18 @@ class SpaceBattle {
         }
     }
 
+    // after implementation of thick function make it private
+    void fight(){
+        processFight<0, 0, sizeof...(S)>();
+
+        // print values
+//        cout << "here: " << endl;
+//        printShields<0, sizeof...(S)>();
+//
+//        cout << numberOfImperialShips << endl;
+//        cout << numberOfRebelianShips << endl;
+    }
+
 
 public:
 
@@ -116,39 +135,33 @@ public:
     size_t countRebelFleet(){
         return numberOfRebelianShips;
     }
-    // after implementation of thick function make it private
-    void fight(){
-        processFight<0, 0, sizeof...(S)>();
-
-        if(numberOfRebelianShips == 0 && numberOfImperialShips == 0)
-            cout << "DRAW" << endl;
-        else if(numberOfRebelianShips == 0)
-            cout << "IMPERIUM WON" << endl;
-        else if(numberOfImperialShips == 0)
-            cout << "REBELLION WON" << endl;
-
-        // print values
-//        printShields<0, sizeof...(S)>();
-//
-//        cout << numberOfImperialShips << endl;
-//        cout << numberOfRebelianShips << endl;
-    }
 
     void tick(T timeStep) {
-        size_t beg = 0;
-        size_t end = battleTimes.size();
 
-        while (beg + 1 < end) {
-            size_t mid = (beg + end) / 2;
+        if(numberOfRebelianShips == 0 && numberOfImperialShips == 0)
+            cout << "DRAW\n";
+        else if(numberOfRebelianShips == 0)
+            cout << "IMPERIUM WON\n";
+        else if(numberOfImperialShips == 0)
+            cout << "REBELLION WON\n";
+        else{
+            // binary search to check if currenTime is square
+            size_t beg = 0;
+            size_t end = battleTimes.size() - 1;
+            size_t mid;
 
-            if (battleTimes[mid] > currentTime)
-                end = mid;
-            else
-                beg = mid;
+            while (beg + 1 < end) {
+                mid = (beg + end) / 2;
+
+                if (battleTimes[mid] > currentTime)
+                    end = mid;
+                else
+                    beg = mid;
+            }
+
+            if (battleTimes[beg] == currentTime || battleTimes[end] == currentTime)
+                fight();
         }
-
-        if (battleTimes[beg] == currentTime || battleTimes[end] == currentTime)
-            fight();
 
         currentTime = (currentTime + timeStep) % (t1 + 1);
         // auto upper = upper_bound(battleTimes, battleTimes + battleTimes.size(), currentTime) - battleTimes;
