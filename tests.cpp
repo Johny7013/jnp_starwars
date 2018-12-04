@@ -281,4 +281,18 @@ int main() {
 
     // const_strarships_end
 
+    // const SpaceBattle
+
+    const SpaceBattle battle6 = SpaceBattle<int, 2, 4,
+            StarCruiser<unsigned>,
+            DeathStar<long>,
+            XWing<int>,
+            XWing<int>>
+            (cruiser4,
+             deathStar4,
+             xwing41,
+             xwing42);
+
+    assert(battle6.countRebelFleet() == 1);
+    assert(battle6.countImperialFleet() == 1);
 }

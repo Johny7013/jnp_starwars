@@ -2,7 +2,6 @@
 #define BATTLE_H
 
 #include <tuple>
-#include <vector>
 #include <iostream>
 #include "imperialfleet.h"
 #include "rebelfleet.h"
@@ -62,7 +61,7 @@ class SpaceBattle {
     size_t numberOfRebelianShips = 0;
 
     template<typename W>
-    bool isAlive (W starship) {
+    bool isAlive (W starship) const{
         return starship.getShield() > 0;
     }
 
@@ -94,7 +93,7 @@ class SpaceBattle {
     }
 
     template<size_t i, size_t size>
-    void setNumersOfShips(){
+    void setNumbersOfShips(){
         if constexpr (i < size)
         {
             if(get<i>(division) == rebel && isAlive(get<i>(spaceships)))
@@ -102,7 +101,7 @@ class SpaceBattle {
             else if(get<i>(division) == imperial && isAlive(get<i>(spaceships)))
                 numberOfImperialShips++;
 
-            setNumersOfShips<i + 1, size>();
+            setNumbersOfShips<i + 1, size>();
         }
     }
 
@@ -114,12 +113,12 @@ class SpaceBattle {
 public:
 
     SpaceBattle(S... s): spaceships(make_tuple(s...)) {
-        setNumersOfShips<0, sizeof...(S)>();
+        setNumbersOfShips<0, sizeof...(S)>();
     }
-    size_t countImperialFleet(){
+    size_t countImperialFleet() const{
         return numberOfImperialShips;
     }
-    size_t countRebelFleet(){
+    size_t countRebelFleet() const{
         return numberOfRebelianShips;
     }
 
