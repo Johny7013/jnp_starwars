@@ -81,7 +81,11 @@ class SpaceBattle {
                 }
             }
 
-            processFight<i, j + 1, size>();
+            if constexpr (get<i>(division) == imperial)
+                processFight<i, j + 1, size>();
+            else
+                processFight<i + 1, 0, size>();
+
         } else if constexpr (i < size){
 
             processFight<i + 1, 0, size>();
