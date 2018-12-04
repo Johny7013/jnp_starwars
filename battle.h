@@ -22,7 +22,8 @@ constexpr static auto squares() {
 
 template<typename R>
 constexpr Fraction starshipFraction(){
-    static_assert(isRebelship<R>() || isImperialship<R>(), "An object that isn't a  non-const starship passed to battle.");
+    static_assert(isRebelship<R>() || isImperialship<R>(),
+            "An object that isn't a  non-const starship passed to battle.");
 
     if constexpr (isRebelship<R>())
         return rebel;
@@ -131,7 +132,7 @@ public:
         else if(numberOfImperialShips == 0)
             cout << "REBELLION WON\n";
         else{
-            // binary search to check if currenTime is square
+            // binary search to check if the currentTime is a square
             size_t beg = 0;
             size_t end = battleTimes.size() - 1;
             size_t mid;
